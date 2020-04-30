@@ -1,0 +1,78 @@
+version: "3.1"
+services:
+  mongo-db:
+    image: mongo:3.6
+    hostname: mongo-db
+    container_name: db-mongo
+    ports:
+        - "8010:27017"
+    networks:
+        - default
+    command: --bind_ip_all --smallfiles
+    volumes:
+      - mongo-db:/data
+
+  
+  crate-db:
+    image: crate:2.3
+    hostname: crate-db
+    container_name: db-crate
+    ports:
+      # Admin UI
+      - "8200:4200"
+      # Transport protocol
+      - "8300:4300"
+      # postgres port
+      - "8432:5432"
+    command: -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    volumes:
+      - crate-db:/data
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    depends_on:
+      - crate-db
+    ports:
+      - "8030:3000"
+    volumes:
+      - grafana:/var/lib/grafana
+   
+
+  orion:
+    image: fiware/orion:2.0.0
+    hostname: orion
+    container_name: fiware-orion
+    depends_on:
+        - mongo-db
+    networks:
+        - default
+    ports:
+        - "8126:1026"
+    command: -dbhost mongo-db -logLevel DEBUG
+
+
+  quantum-leap:
+    image: smartsdk/quantumleap:0.4
+    hostname: quantum-leap
+    container_name: fiware-quantum-leap
+    ports:
+      - "8668:8668"
+    depends_on:
+      - crate-db
+      - mongo-db
+      - orion
+        
+    environment:
+      - CRATE_HOST=crate-db
+
+networks:
+  default:
+    driver_opts:
+            com.docker.network.driver.mtu: ${DOCKER_MTU:-1400}
+
+
+volumes:
+  mongo-db:
+  crate-db:
+  grafana:
