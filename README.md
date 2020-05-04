@@ -20,7 +20,7 @@ v0.0.1
 	- knowage v6.2.1
 
 ### Deploy
-Before starting, set enviroment variable 'service_url' and 'host_url' in file [a relative server.xml](/CONF/server.xml) 
+Before starting, set enviroment variable 'service_url' and 'host_url' in file [server.xml](CONF/server.xml) 
 
 Execute the command into project root folder
 ```sh
