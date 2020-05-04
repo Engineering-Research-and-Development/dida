@@ -1,9 +1,13 @@
-# dida
-![DIDA Schema](docs/images/DIDA-ql.png)
+# Digital Industry Data Analytics (DIDA) Platform
+
+## DIDA Architecture in-the-large
+![DIDA in-the-large](docs/images/DIDA_in_the_large.png)
+## DIDA Architecture in-the-small
+![DIDA in-the-small](docs/images/DIDA-ql.png)
 
 DIDA is a FIWARE based platform for Smart Industry 
 
-## Tool version
+### Tool version
 
 v0.0.1
 
@@ -13,14 +17,14 @@ v0.0.1
 	- FIWARE Orion: v2.0.0
 	- quantum-leap: v0.4
 
-## Deploy
+### Deploy
 Execute the command into project root folder
 ```sh
 docker-compose up -d
 ```
 
 
-## License
+### License
 The DIDA Platform is licensed under the
 
 GNU Affero General Public License v3.0
