@@ -4,7 +4,9 @@
 DIDA is a FIWARE based platform for Smart Industry 
 
 ## Tool version
-  v0.0.1
+
+v0.0.1
+
 	- mongo-db: v3.6
 	- crate-db: v2.3
 	- grafana:  v6.7.3
