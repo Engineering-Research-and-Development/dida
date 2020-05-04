@@ -65,7 +65,32 @@ services:
         
     environment:
       - CRATE_HOST=crate-db
+  
+  ka621:
+      hostname: ka621
+      image: a4blue/ka621ce:latest
+      networks:
+         - default
+      ports:
+         - "8099:9080"
+      depends_on:
+         - mariadb
+      environment:
+         - DB_ROOT_PWD=r00t
+      volumes:
+         - ka621_resources_data:/opt/Knowage-Server-CE/resources
+         - ./CONF:/opt/CONF
 
+  mariadb:
+      hostname: mariadb
+      image: mariadb:10.2-bionic
+      networks:
+         - default
+      environment:
+         - MYSQL_ROOT_PASSWORD=r00t
+         - MYSQL_ROOT_HOST=%
+      volumes:
+         - mariadb_data:/var/lib/mysql
 networks:
   default:
     driver_opts:
@@ -73,6 +98,8 @@ networks:
 
 
 volumes:
+  ka621_resources_data:
+  mariadb_data:
   mongo-db:
   crate-db:
   grafana:
