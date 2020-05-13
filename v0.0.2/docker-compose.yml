@@ -1,0 +1,107 @@
+version: "3.1"
+services:
+  knowage:
+    image: knowagelabs/knowage-server-docker:7.1
+    depends_on:
+      - knowagedb
+    ports:
+      - "8080:8080"
+    networks:
+      - main
+    environment:
+      - DB_USER=$DB_USER
+      - DB_PASS=$DB_PASS
+      - DB_DB=$DB_DB
+      - DB_HOST=$DB_HOST
+      - DB_PORT=$DB_PORT
+      - HMAC_KEY=abc123
+      - PUBLIC_ADDRESS=localhost
+ 
+  knowagedb:
+    image: mysql:5.7
+    ports:
+      - "8306:3306"
+    environment:
+      - MYSQL_USER=$DB_USER
+      - MYSQL_PASSWORD=$DB_PASS
+      - MYSQL_DATABASE=$DB_DB
+      - MYSQL_ROOT_PASSWORD=$DB_ROOT_PASS
+    networks:
+      - main
+    volumes:
+      - "db:/var/lib/mysql"
+  
+  mongo-db-dida:
+    image: mongo:3.6
+    hostname: mongo-db
+    container_name: db-mongo-dida
+    ports:
+        - "8010:27017"
+    networks:
+        - default
+    command: --bind_ip_all --smallfiles
+    volumes:
+      - mongo-db-dida:/data
+
+  
+  crate-db-dida:
+    image: crate:2.3
+    hostname: crate-db
+    container_name: db-crate-dida
+    ports:
+      # Admin UI
+      - "8200:4200"
+      # Transport protocol
+      - "8300:4300"
+      # postgres port
+      - "8432:5432"
+    command: -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    volumes:
+      - crate-db-dida:/data
+
+  grafana-dida:
+    image: grafana/grafana
+    container_name: grafana-dida
+    depends_on:
+      - crate-db-dida
+    ports:
+      - "8030:3000"
+    volumes:
+      - grafana-dida:/var/lib/grafana
+   
+
+  orion-dida:
+    image: fiware/orion:2.0.0
+    hostname: orion
+    container_name: fiware-orion-dida
+    depends_on:
+        - mongo-db-dida
+    networks:
+        - default
+    ports:
+        - "8126:1026"
+    command: -dbhost mongo-db-dida -logLevel DEBUG
+
+
+  quantum-leap-dida:
+    image: smartsdk/quantumleap:0.4
+    hostname: quantum-leap
+    container_name: fiware-quantum-leap-dida
+    ports:
+      - "8668:8668"
+    depends_on:
+      - crate-db-dida
+      - mongo-db-dida
+      - orion-dida
+        
+    environment:
+      - CRATE_HOST=crate-db-dida
+  
+volumes:
+  db:
+  mongo-db-dida:
+  crate-db-dida:
+  grafana-dida:
+
+networks:
+  main:
