@@ -38,7 +38,7 @@ In this respect, the DIDA Reference Architecture allows the implementation on bo
 
 ### Tool version
 
-DIDA is a FIWARE based platform for Smart Industry 
+DIDA is a [FIWARE](https://www.fiware.org/catalogue/) based platform for Smart Industry 
 
 v0.0.3
 	
