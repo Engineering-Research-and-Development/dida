@@ -1,0 +1,278 @@
+version: "3.1"
+services:
+
+  hivemetastore:
+    image: postgres:11.5
+    hostname: hivemetastore
+    container_name: hivemetastore
+    environment:
+      POSTGRES_PASSWORD: new_password
+    expose:
+      - 5432
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      spark_net:
+        ipv4_address: 172.28.1.4
+    extra_hosts:
+      - "master:172.28.1.1"
+      - "worker1:172.28.1.2"
+      - "worker2:172.28.1.3"
+      - "livy:172.28.1.6"
+
+  master:
+    image: rdlabengpa/hadoop-hive-spark:1.0
+    hostname: master
+    container_name: sparkmasterdemo
+    depends_on:
+      - hivemetastore
+    env_file:
+      - ./hadoop.env
+    environment:
+      HADOOP_NODE: namenode
+      #HADOOP_OPTS: "-Dorg.xerial.snappy.tempdir=/tmp"
+      #JAVA_OPTS: "-Djava.io.tmpdir=/tmp"
+      HIVE_CONFIGURE: yes, please
+      SPARK_PUBLIC_DNS: localhost
+      SPARK_LOCAL_IP: 172.28.1.1
+      SPARK_MASTER_HOST: 172.28.1.1
+      SPARK_LOCAL_HOSTNAME: master
+    expose:
+      - 1-65535
+    ports:
+      # Spark Master Web UI
+      - 8080:8080
+      # Spark job Web UI: increments for each successive job
+      - 4040:4040
+      - 4041:4041
+      - 4042:4042
+      - 4043:4043
+      # Spark History server
+      - 18080:18080
+      # YARN UI
+      - 8088:8088
+      # Hadoop namenode UI
+      - 9870:9870
+      # Hadoop secondary namenode UI
+      - 9868:9868
+      # Hive JDBC
+      - 10000:10000
+      - 8061:8061
+    volumes:
+      - ./data:/data:rw
+      - spark_bin:/usr/spark/bin
+      - ./data/libs/kafka-clients-2.5.0.jar:/usr/spark/jars/kafka-clients-2.5.0.jar
+    networks:
+      spark_net:
+        ipv4_address: 172.28.1.1
+    extra_hosts:
+      - "worker1:172.28.1.2"
+      - "worker2:172.28.1.3"
+      - "hivemetastore:172.28.1.4"
+      - "livy:172.28.1.6"
+      - "kafka:172.28.1.16"
+      - "zookeeper:172.28.1.17"
+      - "draco:172.28.1.7"
+
+  worker1:
+    image: rdlabengpa/hadoop-hive-spark:1.0
+    hostname: worker1
+    depends_on:
+      - hivemetastore
+    env_file:
+      - ./hadoop.env
+    environment:
+      SPARK_MASTER_ADDRESS: spark://master:7077
+      SPARK_WORKER_PORT: 8881
+      SPARK_WORKER_WEBUI_PORT: 8081
+      SPARK_PUBLIC_DNS: localhost
+      SPARK_LOCAL_HOSTNAME: worker1
+      SPARK_LOCAL_IP: 172.28.1.2
+      SPARK_MASTER_HOST: 172.28.1.1
+      HADOOP_NODE: datanode
+    expose:
+      - 1-65535
+    ports:
+      # Hadoop datanode UI
+      - 9864:9864
+      #Spark worker UI
+      - 8081:8081
+    volumes:
+      - ./data/namenode:/hadoop/dfs/name
+      - ./data/libs/kafka-clients-2.5.0.jar:/usr/spark/jars/kafka-clients-2.5.0.jar
+    networks:
+      spark_net:
+        ipv4_address: 172.28.1.2
+    extra_hosts:
+      - "master:172.28.1.1"
+      - "worker2:172.28.1.3"
+      - "hivemetastore:172.28.1.4"
+      - "livy:172.28.1.6"
+      - "kafka:172.28.1.16"
+      - "zookeeper:172.28.1.17"
+
+  worker2:
+    image: rdlabengpa/hadoop-hive-spark:1.0
+    hostname: worker2
+    depends_on:
+      - hivemetastore
+    env_file:
+      - ./hadoop.env
+    environment:
+      SPARK_MASTER_ADDRESS: spark://master:7077
+      SPARK_WORKER_PORT: 8882
+      SPARK_WORKER_WEBUI_PORT: 8082
+      SPARK_PUBLIC_DNS: localhost
+      SPARK_LOCAL_HOSTNAME: worker2
+      SPARK_LOCAL_IP: 172.28.1.3
+      SPARK_MASTER_HOST: 172.28.1.1
+      HADOOP_NODE: datanode
+      HADOOP_DATANODE_UI_PORT: 9865
+    expose:
+      - 1-65535
+    ports:
+      # Hadoop datanode UI
+      - 9865:9865
+      # Spark worker UI
+      - 8082:8082
+    volumes:
+      - ./data/namenode:/hadoop/dfs/name
+      - ./data/libs/kafka-clients-2.5.0.jar:/usr/spark/jars/kafka-clients-2.5.0.jar
+    networks:
+      spark_net:
+        ipv4_address: 172.28.1.3
+    extra_hosts:
+      - "master:172.28.1.1"
+      - "worker1:172.28.1.2"
+      - "hivemetastore:172.28.1.4"
+      - "livy:172.28.1.6"
+      - "kafka:172.28.1.16"
+      - "zookeeper:172.28.1.17"
+ 
+  livy:
+    image: rdlabengpa/livy:1.0
+    hostname: livy
+    container_name: livy
+    depends_on:
+      - master
+      - worker1
+      - worker2
+    volumes:
+      - ./livy_batches:/livy_batches:rw
+      - ./data:/data:rw
+      - ./data/libs/kafka-clients-2.5.0.jar:/usr/spark/jars/kafka-clients-2.5.0.jar
+    environment:
+      - SPARK_MASTER=yarn
+      # Intentionally not specified - if it's set here, then we can't override it
+      # via REST API ("conf"={} map)
+      # Can be client or cluster
+#      - SPARK_DEPLOY_MODE=client
+      - LOCAL_DIR_WHITELIST=/data/batches/
+      - ENABLE_HIVE_CONTEXT=false
+      # Defaults are fine for variables below. Uncomment to change them.
+#      - LIVY_HOST=0.0.0.0
+#      - LIVY_PORT=8998
+    expose:
+      - 1-65535
+    ports:
+      - 8998:8998
+    networks:
+      spark_net:
+        ipv4_address: 172.28.1.6
+    extra_hosts:
+      - "master:172.28.1.1"
+      - "worker1:172.28.1.2"
+      - "worker2:172.28.1.3"
+      - "hivemetastore:172.28.1.4"
+      - "kafka:172.28.1.16"
+      - "zookeeper:172.28.1.17" 
+      
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    extra_hosts:
+      - "kafka:172.28.1.17"
+    networks:
+      spark_net:
+        ipv4_address: 172.28.1.17 
+
+  kafka:
+    image: wurstmeister/kafka:2.12-2.4.1
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    expose:
+      - "9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 172.28.1.16
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_BROKER_ID: 1
+     # KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://172.28.1.16:9092
+     # KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:9092
+     # KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+     # KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+     # KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+     # KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "my-topic:1:1"
+    extra_hosts:
+      - "zookeeper:172.28.1.17"
+      - "kafka:172.28.1.16"
+    networks:
+      spark_net:
+        ipv4_address: 172.28.1.16  
+        
+  orion:
+    image: fiware/orion:2.4.0
+    hostname: orion
+    container_name: fiware-orion-dida
+    ports:
+      - "8126:1026"
+    command: -dbhost mongo-db-dida -logLevel DEBUG
+    networks:
+      spark_net:
+        ipv4_address: 172.28.1.8
+
+  draco:
+    image: ging/fiware-draco:FIWARE_7.8.1
+    container_name: draco
+    environment:
+      - NIFI_WEB_HTTP_PORT=9090
+    expose:
+      - 1-65535
+    ports:
+      - "9090:9090"
+      # Receiver port for Orion CB???
+      - "5050:5050"
+      - "5005:5005"
+    volumes:
+      - ./data/draco/hadoop_conf:/opt/nifi/nifi-current/hadoop_conf
+      - ./data/draco/conf:/opt/nifi/nifi-current/conf
+    extra_hosts:
+      - "master:172.28.1.1"
+    networks:
+      spark_net:
+        ipv4_address: 172.28.1.7
+ 
+networks:
+  spark_net:
+    name: spark_net
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+
+volumes:
+    spark_bin:
+

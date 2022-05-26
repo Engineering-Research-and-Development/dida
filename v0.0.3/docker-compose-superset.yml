@@ -1,0 +1,195 @@
+version: "3.1"
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres:11.5
+    volumes:
+      - metadata_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=FoolishPassword
+      - POSTGRES_USER=druid
+      - POSTGRES_DB=druid
+    networks:
+      spark_net:
+        ipv4_address: 172.30.2.45
+      
+#Superset container
+  superset:
+#    image: amancevice/superset:0.18.5
+    image: amancevice/superset:1.4.0
+    container_name: superset
+    ports:
+      - 8888:8088
+    extra_hosts:
+      - "coordinator:172.30.2.40"
+      - "broker:172.30.2.41"
+      - "historical:172.30.2.42"
+      - "middlemanager:172.30.2.43"
+      - "router:172.30.2.44"
+      - "kafka:172.30.2.16"
+      - "zookeeper:172.30.2.17"
+    networks:
+      spark_net:
+        ipv4_address: 172.30.2.20 
+  
+
+### DRUID RELATED STUFF
+  coordinator:
+    image: apache/druid:0.21.1
+    container_name: coordinator
+    volumes:
+      - druid_shared:/opt/shared
+      - coordinator_var:/opt/druid/var
+    depends_on: 
+      - zookeeper
+      - postgres
+    ports:
+      - "9081:8081"
+    command:
+      - coordinator
+    env_file:
+      - environment
+    environment:  
+      - druid.sql.enable=true
+    extra_hosts:
+      - "postgres:172.30.2.50"
+      - "kafka:172.30.2.16"
+      - "zookeeper:172.30.2.17"
+      - "broker:172.30.2.41"
+      - "historical:172.30.2.42"
+      - "middlemanager:172.30.2.43"
+      - "router:172.30.2.44"
+    networks:
+      spark_net:
+        ipv4_address: 172.30.2.40 
+
+  broker:
+    image: apache/druid:0.21.1
+    container_name: broker
+    volumes:
+      - broker_var:/opt/druid/var
+    depends_on: 
+      - zookeeper
+      - postgres
+      - coordinator
+    ports:
+      - "9082:8082"
+    command:
+      - broker
+    env_file:
+      - environment
+    environment:  
+      - druid.sql.enable=true
+    extra_hosts:
+      - "postgres:172.30.2.45"
+      - "kafka:172.30.2.16"
+      - "zookeeper:172.30.2.17"
+      - "coordinator:172.30.2.40"
+      - "historical:172.30.2.42"
+      - "middlemanager:172.30.2.43"
+      - "router:172.30.2.44"
+    networks:
+      spark_net:
+        ipv4_address: 172.30.2.41
+
+  historical:
+    image: apache/druid:0.21.1
+    container_name: historical
+    volumes:
+      - druid_shared:/opt/shared
+      - historical_var:/opt/druid/var
+    depends_on: 
+      - zookeeper
+      - postgres
+      - coordinator
+    ports:
+      - "9083:8083"
+    command:
+      - historical
+    env_file:
+      - environment
+    extra_hosts:
+      - "postgres:172.30.2.45"
+      - "kafka:172.30.2.16"
+      - "zookeeper:172.30.2.17"
+      - "coordinator:172.30.2.40"
+      - "broker:172.30.2.41"
+      - "middlemanager:172.30.2.43"
+      - "router:172.30.2.44"
+    networks:
+      spark_net:
+        ipv4_address: 172.30.2.42
+
+  middlemanager:
+    image: apache/druid:0.21.1
+    container_name: middlemanager
+    volumes:
+      - druid_shared:/opt/shared
+      - middle_var:/opt/druid/var
+    depends_on: 
+      - zookeeper
+      - postgres
+      - coordinator
+    ports:
+      - "9091:8091"
+    command:
+      - middleManager
+    env_file:
+      - environment
+    extra_hosts:
+      - "postgres:172.30.2.45"
+      - "kafka:172.30.2.16"
+      - "zookeeper:172.30.2.17"
+      - "coordinator:172.30.2.40"
+      - "broker:172.30.2.41"
+      - "historical:172.30.2.42"
+      - "router:172.30.2.44"
+    networks:
+      spark_net:
+        ipv4_address: 172.30.2.43
+
+  router:
+    image: apache/druid:0.21.1
+    container_name: router
+    volumes:
+      - router_var:/opt/druid/var
+    depends_on:
+      - zookeeper
+      - postgres
+      - coordinator
+    ports:
+      - "9888:8888"
+    command:
+      - router
+    env_file:
+      - environment
+    extra_hosts:
+      - "postgres:172.30.2.45"
+      - "kafka:172.30.2.16"
+      - "zookeeper:172.30.2.17"
+      - "coordinator:172.30.2.40"
+      - "broker:172.30.2.41"
+      - "historical:172.30.2.42"
+      - "middlemanager:172.30.2.43"
+    networks:
+      spark_net:
+        ipv4_address: 172.30.2.44
+      
+#### END DRUID CONF
+
+networks:
+  superset_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.0.0/16
+
+volumes:
+  metadata_data:
+  middle_var:
+  historical_var:
+  broker_var:
+  coordinator_var:
+  router_var:
+  druid_shared:
