@@ -3,7 +3,7 @@
 ## DIDA Architecture in-the-large
 ![DIDA in-the-large](docs/images/DIDA_in_the_large_v2.png)
 
-###The Reference Architecture layering
+### The Reference Architecture layering
 
 The resulting three-tier RA is depicted in Figure *DIDA Architecture in-the-large* and defines several functional macro-components:
 
@@ -22,8 +22,7 @@ The Data Persistence and Processing sublayer is composed of various FIWARE (Cygn
 The Data Visualization gives a clear understanding of resulting data giving it visual context through maps or graphs. There are specific components, compliant with the most data source that fit different scenarios: Wirecloud enable the quick creation of web applications and dashboards/cockpits, while Grafana supports the analytics and interactive visualization, more oriented to complex monitoring dashboards. Finally, Knowage offers complete set of tools for analytics, paying attention in particular at the data visualization for the most common data sources and big data, covering different topics like Smart Intelligence, Enterprise Reporting, Location Intelligence, Performance Management, Predictive Analysis. Finally, Apache Superset is fast, lightweight, intuitive, and loaded with options that make it easy for users of all skill sets to explore and visualize their data, from simple line charts to highly detailed geospatial charts.
 
 ## DIDA Architecture in-the-small
-![DIDA in-the-small](docs/images/DIDA in the small_v2.png)
-
+![DIDA in-the-small](docs/images/DIDA_in_the_small_v2.png)
 
 ## Modularity and edge-cloud balancing
 The described architecture has been conceived with modularity as a main principle: 
