@@ -11,7 +11,7 @@
 
   <properties>
     <spark.artifact.version>2.12</spark.artifact.version>
-    <spark.version>3.0.1</spark.version>
+    <spark.version>3.3.3</spark.version>
     <scala.version>2.12.12</scala.version>
     <jersey.version>2.30</jersey.version>
   </properties>
