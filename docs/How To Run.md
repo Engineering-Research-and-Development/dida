@@ -69,3 +69,5 @@ If your requirements does not need some of the components, they can be removed f
 Next to DIDA docker-compose.yml file, you can find Superset docker compose docker-compose-superset.yml. This docker file requires environment file, located in same directory and has dependency on DIDA docker compose, in sense that it connects to spark_net and must be run after DIDA docker compose.
 
 Additional remark for Superset - it will start 6 Superset related containers, each about 2,5Gb so you might run into problem that your machine might run out of resources and that Superset will not work correct.
+
+Please, refer to [CAPRI](https://github.com/Engineering-Research-and-Development/capri_cap_blueprints) or [S-X-AIPI](https://github.com/Engineering-Research-and-Development/s-X-AIPI-Autonomic-Manager/) implementation to check existing customizations
