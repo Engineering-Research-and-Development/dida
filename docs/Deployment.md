@@ -2,8 +2,11 @@
 
 Following docker configuration can be used to run algorithms in DIDA platform.
 Before starting the platform, copy algorithm in **data\jobs\py\** folder and all necessary files (csv or other)
+
  
-## Start DIDA Platform
+## Deploy DIDA Platform
+
+### Start Main Docker
 
 Navigate into extracted folder and from terminal execute:
 
@@ -13,7 +16,7 @@ docker compose up
 
 This will start main docker.
 
-## Start Superset
+### Start Superset Docker
 
 After starting DIDA platform, you can start Superset by executing command
 
@@ -29,7 +32,7 @@ docker compose exec superset superset-init
 
 Answer the provided questions and create admin user for Superset.
 
-### Superset - creating database
+####  Create the Superset Database
 
 Open browser and navigate to
 
@@ -49,7 +52,7 @@ SQLAlchemy URI - should point to Druid Broker service
 druid://broker:8082/druid/v2/sql
 ```
 
-### Create Dataset
+#### Create a  Dataset
 
 Open browser and navigate to Druid console:
 
@@ -69,8 +72,7 @@ Click on newly created dataset
 
 Additional remark for Superset - it will start 6 Superset related containers, each about 2,5Gb so you might run into problem that your machine might run out of resources and that Superset will not work correct.
 
-
-## Configuration 
+### Configuration 
 
 ```
 docker exec -it  sparkmasterdemo bash
