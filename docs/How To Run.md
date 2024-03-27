@@ -1,9 +1,9 @@
-## DIDA Platform 
+# DIDA Platform 
 
 Following docker configuration can be used to run algorithms in DIDA platform.
 Before starting the platform, copy algorithm in **data\jobs\py\** folder and all necessary files (csv or other)
  
-### Start main docker
+## Start main docker
 
 Navigate into extracted folder and from terminal execute:
 
@@ -13,7 +13,7 @@ docker compose up
 
 This will start main docker.
 
-### Configuration ###
+## Configuration ##
 
 ```
 docker exec -it  sparkmasterdemo bash
@@ -31,7 +31,7 @@ hdfs dfs -copyFromLocal /data/jobs/py/{filename} /user/hdfs/jobs/dida
 
 ```
 
-# Run algorithm from HDFS
+## Run algorithm from HDFS
 
 From inside docker container 
 
@@ -61,7 +61,7 @@ curl --location --request POST 'http://localhost:8998/batches' \
 ```
 
 
-### Customization
+## Customization
 
 
 If your requirements does not need some of the components, they can be removed from provided docker compose file, by simply editing the file and commenting out, or deleting components that are not needed.
