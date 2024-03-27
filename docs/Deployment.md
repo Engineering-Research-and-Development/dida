@@ -1,7 +1,6 @@
 # DIDA Platform 
 
 Following docker configuration can be used to run algorithms in DIDA platform.
-Before starting the platform, copy algorithm in **data\jobs\py\** folder and all necessary files (csv or other)
 
  
 ## Deploy DIDA Platform
@@ -92,12 +91,17 @@ hdfs dfs -copyFromLocal /data/jobs/py/{filename} /user/hdfs/jobs/dida
 
 ## Run algorithm from HDFS
 
+
 From inside docker container 
+```
+docker exec -it sparkmasterdemo bash
+```
 
 Following example runs python algorithm with one input parameter - test_data.csv.
 Both files needs to be uploaded to HDFS before executing command. How to do that, please check section above.
 
 ```
+docker exec -it sparkmasterdemo bash
 spark-submit --master yarn 
 hdfs://master:9000/user/hdfs/jobs/A3_EXE_CPS2_20220204/algorithm.py hdfs://master:9000/user/hdfs/jobs/A3_EXE_CPS2_20220204/test_data.csv
 ```
