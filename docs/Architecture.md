@@ -1,5 +1,5 @@
 ## DIDA Architecture in-the-large
-![DIDA in-the-large](docs/images/DIDA_in_the_large_v2.png)
+![DIDA in-the-large](images/DIDA_in_the_large_v2.png)
 
 ### The Reference Architecture layering
 
@@ -21,7 +21,7 @@ The *Data Visualization* gives a clear understanding of resulting data giving it
 
 
 ## DIDA Architecture in-the-small
-![DIDA in-the-small](docs/images/DIDA_in_the_small_v2.png)
+![DIDA in-the-small](images/DIDA_in_the_small_v2.png)
 
 ## Modularity and edge-cloud balancing
 The described architecture has been conceived with modularity as a main principle: 
@@ -32,4 +32,4 @@ At the same time the modularity makes possible to approach a microservices desig
 
 In this respect, the DIDA Reference Architecture allows the implementation on both cloud and edge, managing the edge-cloud continuum Figure *DIDA on the Edge* is the edge version of the RA, that can be run on virtualized computing resources nearer to where multiple streams of data are created, thus addressing system latency, privacy, cost and resiliency challenges that a pure cloud computing approach cannot address, and make a big difference in process industry. The edge implementation smoothly integrates with the cloud version, to enable data collection, storing, processing and presentation directly from the plant. Most of the short-term processing, including some data analytics, artificial intelligence and cognitive tasks could be managed at the edge, while cloud resources can be devoted to non-mission critical - massive processing of data.
 
-![DIDA on the Edge](docs/images/DIDA_Edge.png)
+![DIDA on the Edge](images/DIDA_Edge.png)
