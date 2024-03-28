@@ -9,7 +9,7 @@ v0.0.3
  	- FIWARE QuantumLeap v0.8.3
   	- FIWARE PySpark Connector v0.0.10
    	- FIWARE O2K Connector v1.0.1
-    	- FIWARE IoT Agents
+	- FIWARE IoT Agents
 	- Apache Spark v2.4.5
  	- Apache Livy 3.0
  	- Apache PySpark
