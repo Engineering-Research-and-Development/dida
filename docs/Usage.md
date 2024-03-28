@@ -2,6 +2,17 @@
 
 The following section is meant to explain how to plug-and-play algorithms in DIDA platform.
 
+To run the algorithm, follow each solution guide provided in each solution's folder.
+Generally speaking, there are two kind of algorithms:
+- **Batch algorithms** usually runned on livy docker container with the help of Draco
+  - Usually they need to install library dependencies on livy container (dependencies expressed in solution's guide)
+- **Real time algorithms** usually runned on sparkmaster container
+  - They should have every dependency already installed on sparkmaster container, however further modifications may need other libraries
+
+In both case is reccomended to check if the execution starts correctly and wait for the first results to be displayed on screen. <br/>
+
+
+
 ## Configure 
 
 ```
