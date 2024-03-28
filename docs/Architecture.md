@@ -1,3 +1,5 @@
+# DIDA Architecture
+
 ## DIDA Architecture in-the-large
 ![DIDA in-the-large](images/DIDA_in_the_large_v2.png)
 
@@ -33,3 +35,9 @@ At the same time the modularity makes possible to approach a microservices desig
 In this respect, the DIDA Reference Architecture allows the implementation on both cloud and edge, managing the edge-cloud continuum Figure *DIDA on the Edge* is the edge version of the RA, that can be run on virtualized computing resources nearer to where multiple streams of data are created, thus addressing system latency, privacy, cost and resiliency challenges that a pure cloud computing approach cannot address, and make a big difference in process industry. The edge implementation smoothly integrates with the cloud version, to enable data collection, storing, processing and presentation directly from the plant. Most of the short-term processing, including some data analytics, artificial intelligence and cognitive tasks could be managed at the edge, while cloud resources can be devoted to non-mission critical - massive processing of data.
 
 ![DIDA on the Edge](images/DIDA_Edge.png)
+
+
+## Customization
+
+The reference architecture is built in a modular fashion, making the DIDA Platform extensible through the use of other open-sources components and connectors. 
+Please, refer to [CAPRI](https://github.com/Engineering-Research-and-Development/capri_cap_blueprints) or [S-X-AIPI](https://github.com/Engineering-Research-and-Development/s-X-AIPI-Autonomic-Manager/) implementation examples to evaluate existing customizations and extension to the reference architecture.
