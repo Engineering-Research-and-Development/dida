@@ -1,6 +1,6 @@
 <h1>Digital Industry Data Analytics (DIDA) Platform</h1>
 
-![DIDA](images/DIDA.png)
+![DIDA](docs/images/Logo.png)
 
 <div align="justify">
 Lorem Ipsum...
