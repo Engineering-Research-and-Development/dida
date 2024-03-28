@@ -47,7 +47,7 @@ Both files needs to be uploaded to HDFS before executing command. How to do that
 ```
 spark-submit --master yarn
 --driver-memory 512m --num-executors 2 --executor-cores 1 --executor-memory 512m
---py-files algorithm.py --data hdfs://master:9000/user/hdfs/jobs/data/data.csv
+--py-files algorithm.py --data hdfs://master:9000/user/hdfs/jobs/algo/data/data.csv
 ```
 
 
@@ -76,11 +76,11 @@ Same logic occurs when Draco executes Submit REST processor
 curl --location --request POST 'http://localhost:8998/batches' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "file" : "hdfs://master:9000/user/hdfs/jobs/dida/algorithm.py",
+    "file" : "hdfs://master:9000/user/hdfs/jobs/algo/code/algorithm.py",
     "conf": {
         "spark.jars.packages": "org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.5"
         },
-    "args" : ["hdfs://master:9000/user/hdfs/jobs/A3_EXE_CPS2_20220204/test_data.csv"]
+    "args" : ["hdfs://master:9000/user/hdfs/jobs/algo/data/data.csv"]
 }'
 ```
 
