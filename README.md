@@ -22,6 +22,17 @@ Finally, a visualization layer allows the exploration of industrial asset data.
 
 
 
+## Projects
+
+DIDA Platform was involved in the following Europe Horizon Projects:
+- [CAPRI](https://github.com/Engineering-Research-and-Development/capri_cap_blueprints)
+- [AI REGIO](https://airegio-portal.eu/web/guest/component?pageId=5e56677c3f140cd12c67a37b&redirect=%2Fweb%2Fguest%2Fai-orchestrators)
+- [S-X-AIPI](https://github.com/Engineering-Research-and-Development/s-X-AIPI-Autonomic-Manager/tree/main)
+
+And it is part of the [AI on Demand Catalog](https://www.ai4europe.eu/research/ai-catalog/dida-platform)
+
+
+
 
 ## License
 
