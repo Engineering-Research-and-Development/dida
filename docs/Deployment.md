@@ -68,22 +68,6 @@ Additional remark for Superset - it will start 6 Superset related containers, ea
 
 
 
-### Submit job to Livy using postman
-
-Same logic occurs when Draco executes Submit REST processor
-
-```
-curl --location --request POST 'http://localhost:8998/batches' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "file" : "hdfs://master:9000/user/hdfs/jobs/dida/algorithm.py",
-    "conf": {
-        "spark.jars.packages": "org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.5"
-        },
-    "args" : ["hdfs://master:9000/user/hdfs/jobs/A3_EXE_CPS2_20220204/test_data.csv"]
-}'
-```
-
 
 ## Customization
 
