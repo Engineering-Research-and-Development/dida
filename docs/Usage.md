@@ -67,7 +67,7 @@ algorithm: hdfs://master:9000/user/hdfs/jobs/algo/code/algorithm.py
 data:  hdfs://master:9000/user/hdfs/jobs/algo/data/data.csv
 ```
 
-### SPARK LIVY KILLING ACCEPTED BUT NOT STARTED:
+### Stop a Livy Spark job in a Blocked Accepted State:
 
 ```
 docker exec -it  livy bash
