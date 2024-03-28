@@ -11,8 +11,8 @@ Lorem Ipsum...
 ## Documentation Contents
 
 -   [Architecture](docs/Architecture.md)
--   [Deployment](docs/Deployment.md)
 -   [Requirements](docs/Resources.md)
+-   [Deployment](docs/Deployment.md)
 -   [Run your Algorithms](docs/Usage.md)
 -   [Toolkit Versioning](docs/Versioning.md)
 
