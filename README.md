@@ -1,5 +1,6 @@
 <h1>Digital Industry Data Analytics (DIDA) Platform</h1>
 
+![DIDA](images/DIDA.png)
 
 <div align="justify">
 Lorem Ipsum...
@@ -9,7 +10,7 @@ Lorem Ipsum...
 
 ## Documentation Contents
 
--   [Archietecture](docs/Architecture.md)
+-   [Architecture](docs/Architecture.md)
 -   [Deployment](docs/Deployment.md)
 -   [Requirements](docs/Resources.md)
 -   [Run your Algorithms](docs/Usage.md)
