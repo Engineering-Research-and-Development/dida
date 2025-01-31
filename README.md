@@ -22,7 +22,7 @@ Finally, a visualization layer allows the exploration of industrial asset data.
 
 
 
-## Projects
+## Projects and Platform Specializations
 
 DIDA Platform was involved in the following Europe Horizon Projects:
 - [CAPRI](https://www.capri-project.com/) whose declension is [Cognitive Automation Platform](https://github.com/Engineering-Research-and-Development/capri_cap_blueprints)
