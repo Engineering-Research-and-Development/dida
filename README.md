@@ -25,11 +25,12 @@ Finally, a visualization layer allows the exploration of industrial asset data.
 ## Projects
 
 DIDA Platform was involved in the following Europe Horizon Projects:
-- [CAPRI](https://github.com/Engineering-Research-and-Development/capri_cap_blueprints)
-- [AI REGIO](https://airegio-portal.eu/web/guest/component?pageId=5e56677c3f140cd12c67a37b&redirect=%2Fweb%2Fguest%2Fai-orchestrators)
-- [S-X-AIPI](https://github.com/Engineering-Research-and-Development/s-X-AIPI-Autonomic-Manager/tree/main)
+- [CAPRI](https://www.capri-project.com/) whose declension is [Cognitive Automation Platform](https://github.com/Engineering-Research-and-Development/capri_cap_blueprints)
+- [AI REGIO](https://www.airegio-project.eu/) where it is a deployable [AI asset](https://airegio-portal.eu/web/guest/component?pageId=5e56677c3f140cd12c67a37b&redirect=%2Fweb%2Fguest%2Fai-orchestrators)
+- [S-X-AIPI](https://s-x-aipi-project.eu/) whose declension is [Autonomic Manager](https://github.com/Engineering-Research-and-Development/s-X-AIPI-Autonomic-Manager/tree/main)
+- [OPTIMAI](https://optimai.eu/) where it is specialized as [OPR4AA](https://github.com/Engineering-Research-and-Development/opr4aa-platform)
 
-And it is part of the [AI on Demand Asset Catalog](https://www.ai4europe.eu/research/ai-catalog/dida-platform)
+Moreover, it is part of the [AI on Demand Asset Catalog](https://www.ai4europe.eu/research/ai-catalog/dida-platform)
 
 
 
